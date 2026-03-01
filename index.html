@@ -12,7 +12,6 @@
       height: 100vh;
       margin: 0;
     }
-
     .card {
       background: white;
       padding: 20px;
@@ -23,12 +22,7 @@
       flex-direction: column;
       box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 10px;
-    }
-
+    h1 { text-align: center; margin-bottom: 10px; }
     .chat-box {
       flex: 1;
       overflow-y: auto;
@@ -37,19 +31,8 @@
       border: 1px solid #ddd;
       border-radius: 10px;
     }
-
-    .user {
-      text-align: right;
-      margin: 5px;
-      color: blue;
-    }
-
-    .bot {
-      text-align: left;
-      margin: 5px;
-      color: green;
-    }
-
+    .user { text-align: right; margin: 5px; color: blue; }
+    .bot { text-align: left; margin: 5px; color: green; }
     input {
       padding: 10px;
       border-radius: 8px;
@@ -57,7 +40,6 @@
       outline: none;
       width: 70%;
     }
-
     button {
       padding: 10px;
       border: none;
@@ -66,86 +48,71 @@
       color: white;
       cursor: pointer;
     }
-
-    .input-area {
-      display: flex;
-      justify-content: space-between;
-    }
+    .input-area { display: flex; justify-content: space-between; }
   </style>
 </head>
-
 <body>
-
   <div class="card">
     <h1>AI Study Assistant 🤖</h1>
-
     <div class="chat-box" id="chatBox"></div>
-
     <div class="input-area">
       <input type="text" id="userInput" placeholder="Type your question...">
-      <button onclick="sendMesssage()">Send</button>
+      <button onclick="sendMessage()">Send</button>
     </div>
   </div>
+
   <script>
-  var input = document.getElementById("userInput");
-
-  // Press Enter to send
-  input.addEventListener("keypress", function(event) {
-    if (event.key === "Enter") {
-      reply();
-    }
-  });
-
-  function reply() {
-    var text = input.value.trim().toLowerCase();
-    if (text === "") return;
-
+    var input = document.getElementById("userInput");
     var chatBox = document.getElementById("chatBox");
 
-    chatBox.innerHTML += "<div class='user'>You: " + text + "</div>";
+    // Press Enter to send
+    input.addEventListener("keypress", function(event) {
+      if(event.key === "Enter") sendMessage();
+    });
 
-    var answer = "";
+    function sendMessage() {
+      var text = input.value.trim();
+      if(text === "") return;
 
-    // Greeting
-    if (text.includes("hello") || text.includes("hi")) {
-      answer = "Hello! 👋 How can I help you today?";
-    } 
-    // Math
-    else if (!isNaN(eval(text))) {
-      try {
-        answer = "The answer is: " + eval(text) + " 📚";
-      } catch {
-        answer = "That math looks tricky 😅";
+      chatBox.innerHTML += "<div class='user'>You: " + text + "</div>";
+      var lower = text.toLowerCase();
+      var answer = "";
+
+      // Greeting
+      if(lower.includes("hello") || lower.includes("hi") || lower.includes("hey")) {
+        answer = "Hello! 👋 How can I help you today?";
       }
-    } 
-    // Physics
-    else if (text.includes("physics")) {
-      answer = "Physics is the study of matter, energy, and forces ⚛️";
-    } 
-    // Time
-    else if (text.includes("time") || text.includes("clock") || text.includes("hour")) {
-      var now = new Date();
-      answer = "Current time is: " + now.toLocaleTimeString() + " ⏰";
-    } 
-    // Motivation
-    else if (text.includes("motivate")) {
-      var quotes = [
-        "Keep going, you're doing great! 💪",
-        "Success comes from consistency 🚀",
-        "Small steps daily = big results 🔥"
-      ];
-      answer = quotes[Math.floor(Math.random() * quotes.length)];
-    } 
-    else {
-      answer = "I'm still learning 🤖 Ask me about math, physics, time or say hello!";
+      // Math
+      else if(/[0-9+\-*/(). ]/.test(lower)) {
+        try { answer = "The answer is: " + eval(lower) + " 📚"; } 
+        catch { answer = "Hmm, that math looks tricky 😅"; }
+      }
+      // Physics
+      else if(lower.includes("physics")) {
+        answer = "Physics is the study of matter, energy, and forces ⚛️";
+      }
+      // Time
+      else if(lower.includes("time") || lower.includes("clock") || lower.includes("hour")) {
+        answer = "Current time is: " + new Date().toLocaleTimeString() + " ⏰";
+      }
+      // Motivation
+      else if(lower.includes("motivate") || lower.includes("inspire")) {
+        var quotes = [
+          "Keep going, you're doing great! 💪",
+          "Success comes from consistency 🚀",
+          "Small steps daily = big results 🔥"
+        ];
+        answer = quotes[Math.floor(Math.random() * quotes.length)];
+      }
+      // Fallback
+      else {
+        answer = "I'm still learning 🤖 Ask me about math, physics, time or say hello!";
+      }
+
+      chatBox.innerHTML += "<div class='bot'>Bot: " + answer + "</div>";
+      input.value = "";
+      chatBox.scrollTop = chatBox.scrollHeight;
     }
-
-    chatBox.innerHTML += "<div class='bot'>Bot: " + answer + "</div>";
-
-    input.value = ""; // Clear input
-    chatBox.scrollTop = chatBox.scrollHeight; // Auto scroll
-  }
-</script>
-
+  </script>
 </body>
 </html>
