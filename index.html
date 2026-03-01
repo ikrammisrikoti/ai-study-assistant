@@ -86,10 +86,10 @@
       <button onclick="reply()">Send</button>
     </div>
   </div>
-
- <script>
+  <script>
   var input = document.getElementById("userInput");
 
+  // Press Enter to send
   input.addEventListener("keypress", function(event) {
     if (event.key === "Enter") {
       reply();
@@ -106,31 +106,27 @@
 
     var answer = "";
 
-    // Greeting detection
+    // Greeting
     if (text.includes("hello") || text.includes("hi")) {
       answer = "Hello! 👋 How can I help you today?";
-    }
-
-    // Math solving (basic)
+    } 
+    // Math
     else if (!isNaN(eval(text))) {
       try {
         answer = "The answer is: " + eval(text) + " 📚";
       } catch {
         answer = "That math looks tricky 😅";
       }
-    }
-
-    // Physics keyword
+    } 
+    // Physics
     else if (text.includes("physics")) {
       answer = "Physics is the study of matter, energy, and forces ⚛️";
-    }
-
+    } 
     // Time
-    else if (text.includes("time")) {
+    else if (text.includes("time") || text.includes("clock") || text.includes("hour")) {
       var now = new Date();
       answer = "Current time is: " + now.toLocaleTimeString() + " ⏰";
-    }
-
+    } 
     // Motivation
     else if (text.includes("motivate")) {
       var quotes = [
@@ -139,20 +135,17 @@
         "Small steps daily = big results 🔥"
       ];
       answer = quotes[Math.floor(Math.random() * quotes.length)];
-    }
-
+    } 
     else {
       answer = "I'm still learning 🤖 Ask me about math, physics, time or say hello!";
     }
 
     chatBox.innerHTML += "<div class='bot'>Bot: " + answer + "</div>";
 
-    input.value = "";
-    chatBox.scrollTop = chatBox.scrollHeight;
-  else if (text.includes("time") || text.includes("clock") || text.includes("hour")) {
-  var now = new Date();
-  answer = "Current time is: " + now.toLocaleTimeString() + " ⏰"
-    }
+    input.value = ""; // Clear input
+    chatBox.scrollTop = chatBox.scrollHeight; // Auto scroll
+  }
 </script>
+
 </body>
 </html>
