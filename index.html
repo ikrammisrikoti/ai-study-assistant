@@ -61,63 +61,61 @@
     </div>
   </div>
 
-  <script>
-    const input = document.getElementById("userInput");
-    const chatBox = document.getElementById("chatBox");
+<script>
+  const input = document.getElementById("userInput");
+  const chatBox = document.getElementById("chatBox");
 
-    // Press Enter to send
-    input.addEventListener("keypress", function(event) {
-      if(event.key === "Enter") sendMessage();
-    });
+  input.addEventListener("keypress", function(event) {
+    if(event.key === "Enter") sendMessage();
+  });
 
-    function sendMessage() {
-      const text = input.value.trim();
-      if(!text) return;
+  function sendMessage() {
+    const text = input.value.trim();
+    if(!text) return;
 
-      chatBox.innerHTML += `<div class='user'>You: ${text}</div>`;
-      const lower = text.toLowerCase();
-      let answer = "";
+    chatBox.innerHTML += `<div class='user'>You: ${text}</div>`;
+    const lower = text.toLowerCase();
+    let answer = "";
 
-      // Greetings
-      const greetings = ["hello","hi","hey","good morning","good afternoon","good evening"];
-      if(greetings.some(g => lower.includes(g))) {
-        answer = "Hello! 👋 How can I help you today?";
-      }
-      // Math
-      else if(/[0-9+\-*/(). ]/.test(lower)) {
-        try { answer = `The answer is: ${eval(lower)} 📚`; } 
-        catch { answer = "Hmm, that math looks tricky 😅"; }
-      }
-      // Subjects
-      else if(lower.includes("physics")) {
-        answer = "Physics is the study of matter, energy, and forces ⚛️";
-      } else if(lower.includes("chemistry")) {
-        answer = "Chemistry is the study of substances and how they interact ⚗️";
-      } else if(lower.includes("math")) {
-        answer = "Math helps us understand numbers, patterns, and logic 🧮";
-      }
-      // Time
-      else if(lower.includes("time") || lower.includes("clock") || lower.includes("hour")) {
-        answer = `Current time is: ${new Date().toLocaleTimeString()} ⏰`;
-      }
-      // Motivation
-      else if(lower.includes("motivate") || lower.includes("inspire") || lower.includes("encourage")) {
-        const quotes = [
-          "Keep going, you're doing great! 💪",
-          "Success comes from consistency 🚀",
-          "Small steps daily = big results 🔥"
-        ];
-        answer = quotes[Math.floor(Math.random() * quotes.length)];
-      }
-      // Fallback
-      else {
-        answer = "I'm still learning 🤖 Ask me about math, physics, chemistry, time or say hello!";
-      }
-
-      chatBox.innerHTML += `<div class='bot'>Bot: ${answer}</div>`;
-      input.value = "";
-      chatBox.scrollTop = chatBox.scrollHeight;
+    // 1️⃣ Keywords first
+    const greetings = ["hello","hi","hey","good morning","good afternoon","good evening"];
+    if(greetings.some(g => lower.includes(g))) {
+      answer = "Hello! 👋 How can I help you today?";
     }
-  </script>
+    else if(lower.includes("physics")) {
+      answer = "Physics is the study of matter, energy, and forces ⚛️";
+    }
+    else if(lower.includes("chemistry")) {
+      answer = "Chemistry is the study of substances and how they interact ⚗️";
+    }
+    else if(lower.includes("math")) {
+      answer = "Math helps us understand numbers, patterns, and logic 🧮";
+    }
+    else if(lower.includes("time") || lower.includes("clock") || lower.includes("hour")) {
+      answer = `Current time is: ${new Date().toLocaleTimeString()} ⏰`;
+    }
+    else if(lower.includes("motivate") || lower.includes("inspire") || lower.includes("encourage")) {
+      const quotes = [
+        "Keep going, you're doing great! 💪",
+        "Success comes from consistency 🚀",
+        "Small steps daily = big results 🔥"
+      ];
+      answer = quotes[Math.floor(Math.random() * quotes.length)];
+    }
+    // 2️⃣ Only evaluate if the text is a math expression (numbers and math symbols only)
+    else if(/^[0-9+\-*/(). ]+$/.test(lower)) {
+      try { answer = `The answer is: ${eval(lower)} 📚`; } 
+      catch { answer = "Hmm, that math looks tricky 😅"; }
+    }
+    // 3️⃣ Fallback
+    else {
+      answer = "I'm still learning 🤖 Ask me about math, physics, chemistry, time or say hello!";
+    }
+
+    chatBox.innerHTML += `<div class='bot'>Bot: ${answer}</div>`;
+    input.value = "";
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+</script>
 </body>
 </html>
